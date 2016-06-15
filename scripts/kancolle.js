@@ -7,10 +7,11 @@
 
 'use strict';
 
+const hubotSlack = require('hubot-slack');
+
 module.exports = (robot) => {
 
-	robot.hear(/(^遠征に出発しました。帰投予定時刻 )/i, (res) => {
-
+	robot.listeners.push(new hubotSlack.SlackBotListener(robot, /^遠征に出発しました。帰投予定時刻 /i, (res) => {
 		const message = res.message.text;
 		let remindAt = message.substring('遠征に出発しました。帰投予定時刻 '.length);
 		remindAt = remindAt.split(' ').map(val => val.trim()).filter(val => val !== '');
@@ -29,7 +30,7 @@ module.exports = (robot) => {
 		);
 
 		remind(res, remindAt);
-	});
+	}));
 
 	robot.hear(/(^remind mission end at )/i, (res) => {
 
